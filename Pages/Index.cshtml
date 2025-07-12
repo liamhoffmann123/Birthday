@@ -1,0 +1,647 @@
+﻿@page
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Happy 21st Birthday</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Open+Sans:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Open Sans',sans-serif;
+            background: radial-gradient(circle at top,#ffe6f2,#fff0f5), repeating-linear-gradient(45deg,rgba(255,105,180,.12)0 10px,rgba(255,182,193,.12)10px 20px,rgba(255,160,160,.12)20px 30px);
+            background-blend-mode: screen;
+            overflow-x: hidden
+        }
+
+        #gate {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255,240,250,.9);
+            z-index: 2000
+        }
+
+            #gate h2 {
+                font-family: 'Pacifico',cursive;
+                color: #e60073;
+                font-size: 2.3rem;
+                margin-bottom: 1rem
+            }
+
+        #nameInput {
+            padding: .9rem 1.2rem;
+            font-size: 1.1rem;
+            border: 2px solid #ff66a6;
+            border-radius: 25px;
+            outline: none;
+            width: 260px;
+            text-align: center;
+            margin-bottom: 1.2rem
+        }
+
+        #gateBtn {
+            padding: .9rem 2rem;
+            font-size: 1.1rem;
+            background: #ff66a6;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: .3s
+        }
+
+            #gateBtn:hover {
+                transform: scale(1.05)
+            }
+
+        @@keyframes floatUp {
+            0% {
+                transform: translateY(0)
+            }
+
+            100% {
+                transform: translateY(-120vh)
+            }
+        }
+
+        .balloon {
+            position: fixed;
+            bottom: -90px;
+            width: 40px;
+            height: 55px;
+            border-radius: 50% 50% 50% 50%/60% 60% 40% 40%;
+            background: linear-gradient(145deg,#ff66a6,#ff99cc);
+            box-shadow: 0 8px 15px rgba(0,0,0,.15);
+            animation: floatUp 20s linear infinite;
+            z-index: -1
+        }
+
+            .balloon:nth-child(2) {
+                left: 18%;
+                animation-duration: 24s
+            }
+
+            .balloon:nth-child(3) {
+                left: 35%;
+                animation-duration: 22s;
+                width: 50px;
+                height: 68px
+            }
+
+            .balloon:nth-child(4) {
+                left: 57%;
+                animation-duration: 26s;
+                width: 36px;
+                height: 52px
+            }
+
+            .balloon:nth-child(5) {
+                left: 78%;
+                animation-duration: 19s;
+                width: 46px;
+                height: 60px
+            }
+
+        .card-wrapper, .gifts-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100%;
+            text-align: center;
+            padding: 2rem
+        }
+
+        .birthday-card {
+            background: linear-gradient(#ffffff 0%,#fff7fc 100%);
+            border: 6px double #ff66a6;
+            border-radius: 28px;
+            box-shadow: 0 30px 60px rgba(0,0,0,.18);
+            padding: 4rem 3rem;
+            max-width: 520px;
+            animation: fadeIn 1.2s ease
+        }
+
+        .wish-balloon {
+            width: 230px;
+            height: 270px;
+            background: linear-gradient(145deg,#ff66a6,#ff99cc);
+            border-radius: 50% 50% 50% 50%/60% 60% 40% 40%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-family: 'Pacifico',cursive;
+            margin: 0 auto 1.5rem auto;
+            position: relative
+        }
+
+            .wish-balloon:after {
+                content: '';
+                position: absolute;
+                bottom: -42px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 4px;
+                height: 42px;
+                background: #ff99cc
+            }
+
+        .big-num {
+            font-size: 3.9rem;
+            line-height: 1;
+            margin-bottom: -.25rem
+        }
+
+        .sup {
+            font-size: 1.4rem;
+            vertical-align: super
+        }
+
+        .wish-text {
+            font-size: 1.5rem;
+            margin-top: .15rem
+        }
+
+        .greeting {
+            font-family: 'Pacifico',cursive;
+            font-size: 1.6rem;
+            color: #e60073;
+            margin-top: 1.2rem
+        }
+
+        .birthday-card p {
+            font-size: 1.25rem;
+            color: #555;
+            margin: 1.2rem 0 1.5rem 0;
+            line-height: 1.55
+        }
+
+        .countdown {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #ff66a6;
+            margin-top: .8rem
+        }
+
+        .birthday-card button {
+            padding: 1rem 2.4rem;
+            font-size: 1.15rem;
+            background: #ff66a6;
+            color: #fff;
+            border: none;
+            border-radius: 35px;
+            cursor: pointer;
+            transition: .3s;
+            box-shadow: 0 8px 25px rgba(255,102,166,.45);
+            margin-top: 1.8rem
+        }
+
+            .birthday-card button:hover {
+                transform: scale(1.06)
+            }
+
+        .presents {
+            display: grid;
+            grid-template-columns: repeat(3,140px);
+            grid-auto-rows: 140px;
+            gap: 2rem;
+            justify-content: center;
+            align-content: center;
+            margin-top: 2rem
+        }
+
+        .present {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(145deg,#ff4d88,#ff99cc);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            cursor: pointer;
+            box-shadow: 0 0 25px #ff99cc;
+            animation: bounce 2s infinite
+        }
+
+        .candle {
+            position: absolute;
+            top: -32px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 16px;
+            background: #fff;
+            border-radius: 3px 3px 1px 1px
+        }
+
+            .candle:before {
+                content: '';
+                position: absolute;
+                top: -4px;
+                width: 2px;
+                height: 4px;
+                background: #333;
+                border-radius: 1px
+            }
+
+        .flame {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 16px solid #ffcc00;
+            border-radius: 50%;
+            transform-origin: center bottom;
+            animation: flicker .8s infinite ease-in-out
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            background: #fff0fa;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,.3);
+            max-width: 500px;
+            text-align: center;
+            z-index: 1000;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto
+        }
+
+        .lead-line {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #e60073;
+            margin-bottom: .6rem
+        }
+
+        .gift-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(90px,1fr));
+            gap: 1rem;
+            justify-items: center;
+            padding: 1rem 0
+        }
+
+        .gift-box {
+            width: 100px;
+            height: 100px;
+            border-radius: 15px;
+            background: linear-gradient(145deg,#ff4d88,#ff99cc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 800px;
+            cursor: pointer;
+            position: relative;
+            transition: transform .5s;
+            transform-style: preserve-3d
+        }
+
+            .gift-box.opened {
+                transform: rotateY(180deg) scale(1.08)
+            }
+
+        .gift-front, .gift-content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            backface-visibility: hidden;
+            font-weight: bold
+        }
+
+        .gift-front {
+            font-size: 2rem;
+            color: #fff
+        }
+
+        .gift-content {
+            transform: rotateY(180deg);
+            background: #fff;
+            color: #d63384;
+            font-size: .95rem;
+            padding: .3rem;
+            text-align: center
+        }
+
+        .total-display {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #e60073;
+            margin-top: 1rem
+        }
+
+        .close-btn {
+            background: #ff66a6;
+            color: #fff;
+            padding: .7rem 1.6rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: .3s;
+            margin-top: 1.2rem
+        }
+
+            .close-btn:hover {
+                transform: scale(1.05);
+                background: #e60073
+            }
+
+        .toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            background: #ff66a6;
+            color: #fff;
+            padding: 1rem 1.6rem;
+            border-radius: 30px;
+            font-weight: bold;
+            display: none;
+            z-index: 1500;
+            box-shadow: 0 10px 30px rgba(0,0,0,.2)
+        }
+
+        @@keyframes bounce {
+            0%, 100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-10px)
+            }
+        }
+
+        @@keyframes flicker {
+            0% {
+                transform: scale(.95)
+            }
+
+            50% {
+                transform: scale(1.05)
+            }
+
+            100% {
+                transform: scale(.9)
+            }
+        }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        @@keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0
+            }
+        }
+
+        @@keyframes pop {
+            0% {
+                transform: scale(.8)
+            }
+
+            100% {
+                transform: scale(1)
+            }
+        }
+
+        @@keyframes shake {
+            10%, 90% {
+                transform: translateX(-1px)
+            }
+
+            20%, 80% {
+                transform: translateX(2px)
+            }
+
+            30%, 50%, 70% {
+                transform: translateX(-4px)
+            }
+
+            40%, 60% {
+                transform: translateX(4px)
+            }
+        }
+
+        @@keyframes pulse {
+            0% {
+                transform: scale(1)
+            }
+
+            50% {
+                transform: scale(1.08)
+            }
+
+            100% {
+                transform: scale(1)
+            }
+        }
+
+        @@keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: translate(-50%,20px)
+            }
+
+            10% {
+                opacity: 1;
+                transform: translate(-50%,0)
+            }
+
+            90% {
+                opacity: 1;
+                transform: translate(-50%,0)
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%,-20px)
+            }
+        }
+
+        .anim-pop {
+            animation: pop .4s ease
+        }
+
+        .anim-shake {
+            animation: shake .6s ease
+        }
+
+        .anim-pulse {
+            animation: pulse .6s ease
+        }
+
+        .toast {
+            position: fixed;
+            top: 12%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff66a6;
+            color: #fff;
+            padding: 1rem 1.6rem;
+            border-radius: 30px;
+            font-weight: bold;
+            display: none;
+            z-index: 5000;
+            box-shadow: 0 10px 30px rgba(0,0,0,.2)
+        }
+
+    </style>
+</head>
+<body>
+    <div id="gate">
+        <h2>Enter your password : Nickname</h2>
+        <input id="nameInput" placeholder="Type your name">
+        <button id="gateBtn">Let&nbsp;me&nbsp;in</button>
+    </div>
+
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+
+    <div class="card-wrapper" id="cardScreen" style="display:none">
+        <div class="birthday-card">
+            <div class="wish-balloon">
+                <span class="big-num">21</span><sup class="sup">st</sup>
+                <div class="wish-text">Birthday</div>
+            </div>
+            <div class="greeting">To my shnooooooooochsmmmmm</div>
+            <p>I hope today overflows with every beautiful emotion you give to the world. May laughter echo, memories sparkle, and love wrap you up all day long.</p>
+            <div id="countdown" class="countdown"></div>
+            <p style="font-weight:600;color:#e60073;">Love, LiLi 💖</p>
+            <button onclick="openGifts()">Go to Fun Part 🎁</button>
+        </div>
+    </div>
+
+    <div class="gifts-wrapper" id="giftScreen" style="display:none">
+        <h2 style="font-family:'Pacifico',cursive;font-size:2.2rem;color:#e60073;">Choose Your Surprise 💝</h2>
+        <div id="presentsContainer" class="presents">
+            <div class="present action-diy"><div class="candle"><div class="flame"></div></div>🎁</div>
+            <div class="present action-joke" data-msg="Chocolate explosion incoming 🍫"><div class="candle"><div class="flame"></div></div>🎁</div>
+            <div class="present action-joke" data-msg="Box full of glitter ✨"><div class="candle"><div class="flame"></div></div>🎁</div>
+            <div class="present action-joke" data-msg="This one slipped away 🏃‍♀️💨"><div class="candle"><div class="flame"></div></div>🎁</div>
+            <div class="present action-joke" data-msg="You almost had it 😂"><div class="candle"><div class="flame"></div></div>🎁</div>
+            <div class="present action-cash"><div class="candle"><div class="flame"></div></div>🎁</div>
+            <div class="present action-joke" data-msg="Better luck next time 😝"><div class="candle"><div class="flame"></div></div>🎁</div>
+            <div class="present action-joke" data-msg="Oops, empty box 🙈"><div class="candle"><div class="flame"></div></div>🎁</div>
+            <div class="present action-joke" data-msg="Surprise postponed 📦"><div class="candle"><div class="flame"></div></div>🎁</div>
+        </div>
+    </div>
+
+    <div class="popup" id="popup1">
+        <h3 style="font-family:'Pacifico',cursive;color:#e60073;font-size:1.7rem;">🛠️ Custom Dresser Adventure</h3>
+        <p class="lead-line">This little pressie is going to be a hands-on adventure.</p>
+        <p>We’re going to build you a gorgeous dresser from scratch—cutting every plank, sanding every edge, and choosing every knob together.</p>
+        <button class="close-btn" onclick="closePopup('popup1')">Close</button>
+    </div>
+
+    <div class="popup" id="giftGamePopup">
+        <h3 style="font-family:'Pacifico',cursive;color:#e60073;">💸 Pick Your 12 Mystery Gifts</h3>
+        <p>Tap each box to reveal what’s inside 👀</p>
+        <div id="giftGrid" class="gift-grid"></div>
+        <div id="runningTotal" class="total-display">Total so far: R0</div>
+        <button class="close-btn" onclick="closePopup('giftGamePopup')">Close</button>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        const allowed = new Set(['shnoocks', 'poppy', 'mylove', 'cc']);   // only these pass
+        function normalize(s) { return s.toLowerCase().replace(/[^a-z]/g, ''); }
+
+        document.getElementById('gateBtn').onclick = () => {
+            const name = normalize(document.getElementById('nameInput').value);
+            if (allowed.has(name)) {
+                document.getElementById('gate').style.display = 'none';
+                document.getElementById('cardScreen').style.display = 'flex';
+            } else {
+                showToast('Name not on the list 🤔');
+                document.getElementById('nameInput').focus();
+            }
+        };
+
+        /* ---------- existing helpers remain unchanged ---------- */
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.style.display = 'block';
+            t.style.animation = 'none';
+            void t.offsetWidth;                     // reflow to restart animation
+            t.style.animation = 'fadeIn .3s ease,fadeInOut 3s 3s ease forwards';
+            setTimeout(() => { t.style.display = 'none'; }, 6000);
+        }
+
+        let diyClicked = false
+        let cashClicked = false
+        function openGifts() { document.getElementById('cardScreen').style.display = 'none'; document.getElementById('giftScreen').style.display = 'flex'; initActions() }
+        function initActions() {
+            document.querySelector('.action-diy').onclick = () => { diyClicked = true; checkSpecial(); showPopup('popup1') }
+            document.querySelector('.action-cash').onclick = () => { cashClicked = true; checkSpecial(); showGiftGame() }
+            document.querySelectorAll('.action-joke').forEach(p => p.onclick = () => showToast(p.dataset.msg))
+        }
+        function showPopup(id) { document.getElementById(id).style.display = 'block' }
+        function closePopup(id) { document.getElementById(id).style.display = 'none' }
+        function showGiftGame() { document.getElementById('giftGamePopup').style.display = 'block'; createGiftBoxes() }
+        function checkSpecial() { if (diyClicked && cashClicked) confetti() }
+        function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]] } return a }
+        function createGiftBoxes() {
+            const vals = ["R1500", "R1000", "R750", "R500", "R200", "R47.50", "R2.50", "Unlucky 😜", "Try Again 🤪", "Nada 💀", "R1.50", "Oops!"]
+            shuffle(vals)
+            const grid = document.getElementById('giftGrid'); grid.innerHTML = ''
+            let total = 0; let opened = 0; const anims = ['anim-pop', 'anim-shake', 'anim-pulse']
+            vals.forEach(v => {
+                const box = document.createElement('div'); box.className = 'gift-box'; const f = document.createElement('div'); f.className = 'gift-front'; f.textContent = '🎁'; const b = document.createElement('div'); b.className = 'gift-content'; b.textContent = v; box.appendChild(f); box.appendChild(b); box.onclick = () => {
+                    if (box.classList.contains('opened')) return; box.classList.add('opened', anims[Math.floor(Math.random() * anims.length)]); opened++
+                    if (v.startsWith('R')) { total += parseFloat(v.replace(/[R\s]/g, '')); document.getElementById('runningTotal').textContent = 'Total so far: R' + total.toFixed(2) }
+                    if (opened === 2) confetti()
+                }; grid.appendChild(box)
+            })
+        }
+        function confetti() {
+            for (let i = 0; i < 120; i++) { const d = document.createElement('div'); d.style.position = 'fixed'; d.style.width = '8px'; d.style.height = '8px'; d.style.backgroundColor = ['#ff66a6', '#66ccff', '#ffd700'][Math.floor(Math.random() * 3)]; d.style.left = Math.random() * 100 + 'vw'; d.style.top = '-10px'; d.style.borderRadius = '50%'; d.style.zIndex = 1000; d.style.opacity = .9; d.style.animation = `fall ${2 + Math.random() * 3}s ease-out forwards`; document.body.appendChild(d); d.onanimationend = () => d.remove() }
+        }
+        function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block'; t.style.animation = 'none'; void t.offsetWidth; t.style.animation = 'fadeIn .3s ease,fadeInOut 3s 3s ease forwards'; setTimeout(() => { t.style.display = 'none' }, 6000) }
+        function startCountdown() { const el = document.getElementById('countdown'); function nextBirthday() { const now = new Date(); let y = now.getFullYear(); let b = new Date(y, 6, 13, 0, 0, 0); if (b <= now) b = new Date(y + 1, 6, 13, 0, 0, 0); return b } function update() { const now = new Date(); const diff = nextBirthday() - now; const d = Math.floor(diff / 86400000); const h = Math.floor(diff % 86400000 / 3600000); const m = Math.floor(diff % 3600000 / 60000); const s = Math.floor(diff % 60000 / 1000); el.textContent = `Countdown: ${d}d ${h}h ${m}m ${s}s` } update(); setInterval(update, 1000) }
+        startCountdown()
+    </script>
+</body>
+</html>
